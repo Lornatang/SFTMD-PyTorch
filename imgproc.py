@@ -29,7 +29,7 @@ __all__ = [
     "image2tensor", "tensor2image",
     "principal_component_analysis", "calculate_sigma", "isotropic_gaussian_kernel", "anisotropic_gaussian_kernel", "random_batch_noise",
     "batch_bicubic_kernel", "gaussian_noise",
-    "PrincipalComponentAnalysisEncode", "BatchBlur", "BatchSRKernel",
+    "PrincipalComponentAnalysisEncode", "BatchBlur", "BatchSRKernel", "SRMDPreprocessing",
     "rgb2ycbcr", "bgr2ycbcr", "ycbcr2bgr", "ycbcr2rgb",
     "center_crop", "random_crop", "random_rotate", "random_horizontally_flip", "random_vertically_flip",
 ]
