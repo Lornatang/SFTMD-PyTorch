@@ -146,14 +146,14 @@ def random_batch_noise(batch_size: int, high: float, noise_coeff: float) -> np.n
     return batch_noise
 
 
-def batch_bicubic_kernel(x: torch.Tensor, scale: int or float, device: torch.device) -> torch.Tensor:
+def batch_bicubic_kernel(x: torch.Tensor, upscale_factor: int or float, device: torch.device) -> torch.Tensor:
     if device.type == "cuda":
         x = x.data
     else:
         x = x.cpu().data
     in_batch_size, in_channels, in_height, in_width = x.size()
-    out_height = int(in_height / scale)
-    out_width = int(in_width / scale)
+    out_height = int(in_height / upscale_factor)
+    out_width = int(in_width / upscale_factor)
     out = x.view((in_batch_size * in_channels, 1, in_height, in_width))
     kernel_out = torch.zeros((in_batch_size * in_channels, 1, out_height, out_width))
     for i in range(in_batch_size * in_channels):
@@ -254,12 +254,13 @@ class BatchSRKernel(object):
 
 
 class SRMDPreprocessing(object):
-    def __init__(self, scale: int or float, pca: torch.Tensor, random: bool, kernel_size: int, noise: bool, device: torch.device, is_tensor: bool,
+    def __init__(self, upscale_factor: int or float, pca_matrix_path: torch.Tensor, random: bool, kernel_size: int, noise: bool,
+                 device: torch.device, is_tensor: bool,
                  sigma: float, min_sigma: float, max_sigma: float, iso_prob: float, scaling: int, noise_coeff: float, noise_high: float):
-        self.pca_encoder = PrincipalComponentAnalysisEncode(pca, device)
+        self.pca_encoder = PrincipalComponentAnalysisEncode(pca_matrix_path, device)
         self.batch_sr_kernel = BatchSRKernel(kernel_size, sigma, min_sigma, max_sigma, iso_prob, scaling)
         self.batch_blur = BatchBlur(kernel_size)
-        self.scale = scale
+        self.upscale_factor = upscale_factor
         self.kernel_size = kernel_size
         self.noise = noise
         self.device = device
@@ -277,7 +278,7 @@ class SRMDPreprocessing(object):
         # kernel encode
         kernel = self.pca_encoder(batch_sr_kernel)
         # Down sample
-        lr_tensor = batch_bicubic_kernel(hr_tensor, self.scale, self.device)
+        lr_tensor = batch_bicubic_kernel(hr_tensor, self.upscale_factor, self.device)
         # Noise
         if self.noise:
             noise_level = torch.FloatTensor(random_batch_noise(batch_size, self.noise_high, self.noise_coeff))
