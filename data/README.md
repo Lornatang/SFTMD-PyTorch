@@ -10,8 +10,8 @@ Contains DIV2K, DIV8K, Flickr2K, OST, T91, Set5, Set14, BSDS100 and BSDS200, etc
 ## Train dataset struct information
 
 ```text
-- ImageNet
-    - RCAN
+- DF2K
+    - SFTMD
         - train
         - valid
 ```
