@@ -30,7 +30,7 @@ upscale_factor = 2
 # Current configuration parameter method
 mode = "train"
 # Experiment name, easy to save weights and log files
-exp_name = "RCAN_x2"
+exp_name = "SFTMD_x2"
 # PCA matrix address
 pca_matrix_path = "results/pca_matrix.pth"
 # Gaussian kernel size
@@ -45,8 +45,8 @@ max_sigma = 4.0
 
 if mode == "train":
     # Dataset
-    train_image_dir = f"data/DIV2K/RCAN/train"
-    valid_image_dir = f"data/DIV2K/RCAN/valid"
+    train_image_dir = f"data/DF2K/SFTMD/train"
+    valid_image_dir = f"data/DF2K/SFTMD/valid"
     test_lr_image_dir = f"data/Set5/LRbicx{upscale_factor}"
     test_hr_image_dir = f"data/Set5/GTmod12"
 

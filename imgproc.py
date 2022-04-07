@@ -178,8 +178,8 @@ def gaussian_noise(x: torch.Tensor, sigma: torch.Tensor, mean: float = 0.0, nois
 
 
 class PrincipalComponentAnalysisEncode(object):
-    def __init__(self, pca_weight, device: torch.device) -> torch.Tensor:
-        self.pca_weight = pca_weight.to(device, non_blocking=True)
+    def __init__(self, pca_weight) -> torch.Tensor:
+        self.pca_weight = torch.load(pca_weight)
         self.size = self.pca_weight.size()
 
     def __call__(self, batch_kernel: torch.Tensor) -> torch.Tensor:
@@ -257,7 +257,7 @@ class SRMDPreprocessing(object):
     def __init__(self, upscale_factor: int or float, pca_matrix_path: torch.Tensor, random: bool, kernel_size: int, noise: bool,
                  device: torch.device, is_tensor: bool,
                  sigma: float, min_sigma: float, max_sigma: float, iso_prob: float, scaling: int, noise_coeff: float, noise_high: float):
-        self.pca_encoder = PrincipalComponentAnalysisEncode(pca_matrix_path, device)
+        self.pca_encoder = PrincipalComponentAnalysisEncode(pca_matrix_path)
         self.batch_sr_kernel = BatchSRKernel(kernel_size, sigma, min_sigma, max_sigma, iso_prob, scaling)
         self.batch_blur = BatchBlur(kernel_size)
         self.upscale_factor = upscale_factor
@@ -270,7 +270,7 @@ class SRMDPreprocessing(object):
         self.random = random
 
     def __call__(self, x: torch.Tensor) -> torch.Tensor:
-        batch_size, _, _, _ = x.size()
+        batch_size, _, _ = x.size()
 
         batch_sr_kernel = self.batch_sr_kernel(self.random, batch_size, self.is_tensor).to(self.device, non_blocking=True)
         # blur

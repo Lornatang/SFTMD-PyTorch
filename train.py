@@ -119,7 +119,7 @@ def load_dataset() -> [CUDAPrefetcher, CUDAPrefetcher, CUDAPrefetcher]:
                                             sigma=config.sigma,
                                             min_sigma=config.min_sigma,
                                             max_sigma=config.max_sigma,
-                                            device=torch.device,
+                                            device=config.device,
                                             mode="Train")
     valid_datasets = TrainValidImageDataset(image_dir=config.valid_image_dir,
                                             image_size=config.image_size,
@@ -129,7 +129,7 @@ def load_dataset() -> [CUDAPrefetcher, CUDAPrefetcher, CUDAPrefetcher]:
                                             sigma=config.sigma,
                                             min_sigma=config.min_sigma,
                                             max_sigma=config.max_sigma,
-                                            device=torch.device,
+                                            device=config.device,
                                             mode="Valid")
     test_datasets = TestImageDataset(test_lr_image_dir=config.test_lr_image_dir,
                                      test_hr_image_dir=config.test_hr_image_dir,
@@ -139,7 +139,7 @@ def load_dataset() -> [CUDAPrefetcher, CUDAPrefetcher, CUDAPrefetcher]:
                                      sigma=config.sigma,
                                      min_sigma=config.min_sigma,
                                      max_sigma=config.max_sigma,
-                                     device=torch.device)
+                                     device=config.device)
 
     # Generator all dataloader
     train_dataloader = DataLoader(train_datasets,

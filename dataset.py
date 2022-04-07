@@ -56,7 +56,7 @@ class TrainValidImageDataset(Dataset):
         self.upscale_factor = upscale_factor
         # Used by the model to enter the kernel method during the validation phase
         self.batch_kernel_process = imgproc.SRMDPreprocessing(upscale_factor=upscale_factor, pca_matrix_path=pca_matrix_path, random=True,
-                                                              kernel_size=kernel_size, noise=False, device=device, is_tensor=True, sigma=sigma,
+                                                              kernel_size=kernel_size, noise=True, device=device, is_tensor=True, sigma=sigma,
                                                               min_sigma=min_sigma, max_sigma=max_sigma, iso_prob=1.0, scaling=3, noise_coeff=0.2,
                                                               noise_high=0.0)
         # Load training dataset or test dataset
